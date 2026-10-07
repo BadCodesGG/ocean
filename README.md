@@ -5,7 +5,7 @@ Ocean reads the latest motion record from one of 15 CDIP wave buoys off Hawaiʻi
 
 **Live: [ocean.badcodes.dev](https://ocean.badcodes.dev)**
 
-<!-- demo-video -->
+https://github.com/user-attachments/assets/6b4002c6-bc73-44f1-85f4-71d11638cbb0
 
 The long swell is phase-resolved from the buoy's own measured displacement, so the sets arrive as they were recorded. The shorter chop is synthesised from the same buoy's directional spectrum. Sun and moon are computed for the place and minute the waves were measured, clouds, wind and rain come from a weather forecast at the buoy, and the land on the horizon is real elevation data, with the sea clipped at the shore. The scene runs about 80 minutes behind live, because that is how old the newest complete buoy record is.
 
