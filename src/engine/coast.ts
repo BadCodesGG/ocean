@@ -140,7 +140,7 @@ vec3 hazed(vec3 color, vec3 world, float height, float extra) {
   float haze = max(extra, 1.0 - exp(-dist * thin / reach));
   vec3 behind = textureLod(sky, skyUv(d), 0.0).rgb / skyScale;
   float path = min(1000.0 / max(d.y, 0.025), 40000.0);
-  vec3 low = textureLod(sky, skyUv(normalize(vec3(d.x, 0.02, d.z))), 3.0).rgb / skyScale;
+  vec3 low = horizonAt(sky, d) / skyScale;
   behind = mix(behind, low, max(0.0, exp(-3.9 * path / 40000.0) - exp(-3.9 * path / visibility)));
   return mix(color, behind * (1.0 + flash * 6.0), haze);
 }

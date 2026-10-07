@@ -316,7 +316,7 @@ void main() {
   // Haze: the air between the eye and the water, toward the horizon's own colour. On a clear day it
   // takes about 9 km to grey out by two thirds; fog and rain bring it close.
   float haze = 1.0 - exp(-dist / min(9000.0, visibility / 3.9));
-  vec3 horizon = skyAt(normalize(vec3(-v.x, 0.01, -v.z)), 0.0);
+  vec3 horizon = horizonAt(sky, -v) / skyScale;
   color = mix(color, horizon, haze);
 
   color *= 1.0 + flash * 3.0;
