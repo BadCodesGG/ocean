@@ -137,7 +137,7 @@ void main() {
 }
 `;
 
-const FRAGMENT = /* glsl */ `
+export const FRAGMENT = /* glsl */ `
 ${COMMON}
 ${SKY_LOOKUP_GLSL}
 uniform sampler2D sky;
@@ -314,9 +314,11 @@ void main() {
   color = mix(color, (ambient * 0.7 + sunColor * nl * 0.5 + moonColor * max(dot(n, moonDir), 0.0) * 0.5) * 0.9, foam * 0.8);
 
   // Haze: the air between the eye and the water, toward the horizon's own colour. On a clear day it
-  // takes about 9 km to grey out by two thirds; fog and rain bring it close.
+  // takes about 9 km to grey out by two thirds; fog and rain bring it close. The colour comes from a
+  // blurred level, as the dome and the coast take theirs: the sky's top level carries the march's
+  // per-pixel jitter, which one row of it, stretched down a fogged sea, draws as vertical streaks.
   float haze = 1.0 - exp(-dist / min(9000.0, visibility / 3.9));
-  vec3 horizon = skyAt(normalize(vec3(-v.x, 0.01, -v.z)), 0.0);
+  vec3 horizon = skyAt(normalize(vec3(-v.x, 0.01, -v.z)), 3.0);
   color = mix(color, horizon, haze);
 
   color *= 1.0 + flash * 3.0;
