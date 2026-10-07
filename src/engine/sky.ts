@@ -186,6 +186,10 @@ void main() {
 }
 `;
 
+/** Where `horizonAt` reads the bake: the height of its ray (as dir.y), and the blurred level. */
+export const HORIZON_ELEVATION = 0.02;
+export const HORIZON_LOD = 3;
+
 /** Shared lookup into the baked sky: direction to texture coordinate, inverse of `directionFromUv`. */
 export const SKY_LOOKUP_GLSL = /* glsl */ `
 vec2 skyUv(vec3 dir) {
@@ -193,6 +197,14 @@ vec2 skyUv(vec3 dir) {
   float elev = asin(clamp(dir.y, -1.0, 1.0));
   float s = sign(elev) * sqrt(abs(elev) / 1.5707963);
   return vec2(phi / (2.0 * 3.14159265) + 0.5, s * 0.5 + 0.5);
+}
+/**
+ * The low sky on this bearing, the colour fog and haze grey out toward (still times the bake's scale).
+ * Blurred: the bake's top level carries the march's per-pixel jitter, and one row of it, stretched
+ * down a fogged sea or hillside, draws vertical streaks.
+ */
+vec3 horizonAt(sampler2D bake, vec3 dir) {
+  return textureLod(bake, skyUv(normalize(vec3(dir.x, ${HORIZON_ELEVATION.toFixed(2)}, dir.z))), ${HORIZON_LOD.toFixed(1)}).rgb;
 }
 `;
 
@@ -266,7 +278,7 @@ void main() {
   // Fog or rain: a line of sight through the bottom kilometre of air, which low sight lines cross for tens
   // of kilometres; it greys out toward the horizon's own colour.
   float path = min(1000.0 / max(d.y, 0.025), 40000.0);
-  vec3 horizonColor = textureLod(sky, skyUv(normalize(vec3(d.x, 0.02, d.z))), 3.0).rgb / skyScale;
+  vec3 horizonColor = horizonAt(sky, d) / skyScale;
   color = mix(color, horizonColor, max(0.0, exp(-3.9 * path / 40000.0) - exp(-3.9 * path / visibility)));
   // Lightning lights the cloud from inside.
   color *= 1.0 + flash * 6.0 * (1.0 - s.a);
