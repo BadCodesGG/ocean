@@ -1,0 +1,20 @@
+Dataset {
+    String sourceFilename[sourceCount = 100000];
+    Int32 xyzStartTime;
+    Float32 xyzSampleRate;
+    Float32 xyzFilterDelay;
+    Byte xyzFlagPrimary[xyzCount = 14466986];
+    Byte xyzFlagSecondary[xyzCount = 14466986];
+    Float32 xyzZDisplacement[xyzCount = 14466986];
+    Float32 xyzXDisplacement[xyzCount = 14466986];
+    Float32 xyzYDisplacement[xyzCount = 14466986];
+    Int32 xyzSourceIndex[xyzCount = 14466986];
+    String metaStationName;
+    String metaPlatform;
+    String metaInstrumentation;
+    Float32 metaDeployLatitude;
+    Float32 metaDeployLongitude;
+    Float32 metaWaterDepth;
+    Float32 metaDeclination;
+    String metaGridMapping;
+} cdip/realtime/106p1_xy.nc;

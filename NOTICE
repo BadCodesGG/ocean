@@ -1,0 +1,13 @@
+This project's code is licensed under the MIT licence in LICENSE. The
+following are not covered by it.
+
+The captured buoy responses in src/lib/__fixtures__/ (106p1_rt.ascii.txt,
+106p1_rt.dds.txt, 106p1_sst.ascii.txt, 106p1_xy.ascii.txt and
+106p1_xy.dds.txt) are not covered by the MIT licence. They are data from the
+Coastal Data Information Program (CDIP), Scripps Institution of Oceanography,
+UC San Diego, and are used under CDIP's data use terms, which allow free
+public use with acknowledgement; see README.md for the credit.
+
+The BadCodes name, logo and wordmark are not licensed under the MIT
+licence. A fork keeps the copyright notice in LICENSE but should not
+present itself as BadCodes or use the logo as its own brand.

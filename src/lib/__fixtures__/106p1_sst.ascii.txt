@@ -1,0 +1,15 @@
+Dataset {
+    Int32 sstTime[sstTime = 6];
+    Byte sstFlagPrimary[sstTime = 6];
+    Float32 sstSeaSurfaceTemperature[sstTime = 6];
+} cdip/realtime/106p1_rt.nc;
+---------------------------------------------
+sstTime[6]
+1790800100, 1790801900, 1790803700, 1790805500, 1790807300, 1790809100
+
+sstFlagPrimary[6]
+1, 1, 1, 1, 1, 1
+
+sstSeaSurfaceTemperature[6]
+27.0, 27.0, 27.0, 27.05, 27.099998, 27.150002
+
