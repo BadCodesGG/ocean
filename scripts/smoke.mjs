@@ -6,8 +6,8 @@
  * Boots `next start` (dev mode hides prerender and bundling problems, so it refuses to run without a
  * build), then checks the routes against the real CDIP and Open-Meteo services: the buoy data, the
  * station status, the named station pages and the old id addresses that redirect to them. Then it
- * drives the page in GPU Google Chrome (Playwright, channel "chrome"): the scene draws, the coast loads, the console stays clean, the
- * label is honest, the picker greys out the buoys that are down, the light, weather and picture
+ * drives the page in GPU Google Chrome (Playwright, channel "chrome"): the scene draws, the coast
+ * loads, the console stays clean, the label is honest, the picker greys out the buoys that are down, the light, weather and picture
  * settings change the scene, survive a reload and reset to live, a boat launches and runs, and the
  * sound switches on. Prints a line per assertion and exits 1 if any failed.
  */
@@ -60,7 +60,14 @@ async function waitForServer() {
   throw new Error(`server did not start:\n${serverLog}`);
 }
 
-const browser = await chromium.launch({ headless: true, channel: "chrome", args: ["--use-angle=d3d11", "--ignore-gpu-blocklist"] });
+// The installed Google Chrome, never Playwright's bundled Chromium (CVE-2026-118306 et al). A failed
+// launch (no Chrome here) stops the server it would otherwise leave holding the port.
+const browser = await chromium
+  .launch({ headless: true, channel: "chrome", args: ["--use-angle=d3d11", "--ignore-gpu-blocklist"] })
+  .catch((error) => {
+    stopServer();
+    throw error;
+  });
 try {
   await waitForServer();
 
