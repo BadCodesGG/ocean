@@ -6,16 +6,16 @@
  * Boots `next start` (dev mode hides prerender and bundling problems, so it refuses to run without a
  * build), then checks the routes against the real CDIP and Open-Meteo services: the buoy data, the
  * station status, the named station pages and the old id addresses that redirect to them. Then it
- * drives the page in GPU Chromium: the scene draws, the coast loads, the console stays clean, the
- * label is honest, the picker greys out the buoys that are down, the light, weather and picture
- * settings change the scene, survive a reload and reset to live, a boat launches and runs, and the
- * sound switches on. Prints a line per assertion and exits 1 if any failed.
+ * drives the page in GPU Google Chrome (Playwright, channel "chrome"): the scene draws, the coast
+ * loads, the console stays clean, the label is honest, the picker greys out the buoys that are down,
+ * the light, weather and picture settings change the scene, survive a reload and reset to live, a
+ * boat launches and runs, and the sound switches on. Prints a line per assertion and exits 1 if any failed.
  */
 
 import { spawn, spawnSync } from "node:child_process";
 import { existsSync } from "node:fs";
 import path from "node:path";
-import { chromium } from "playwright";
+import { launchChrome } from "./lib/chrome.mjs";
 
 const ROOT = path.resolve(import.meta.dirname, "..");
 const PORT = Number(process.argv.find((a) => a.startsWith("--port="))?.slice(7) ?? 3132);
@@ -60,7 +60,13 @@ async function waitForServer() {
   throw new Error(`server did not start:\n${serverLog}`);
 }
 
-const browser = await chromium.launch({ headless: true, args: ["--use-angle=d3d11", "--ignore-gpu-blocklist"] });
+// The installed Google Chrome, never Playwright's bundled Chromium (CVE-2026-118306 et al). A failed
+// launch (no Chrome here, or one older than the patched build) stops the server it would otherwise leave holding the port.
+const browser = await launchChrome({ headless: true, args: ["--use-angle=d3d11", "--ignore-gpu-blocklist"] })
+  .catch((error) => {
+    stopServer();
+    throw error;
+  });
 try {
   await waitForServer();
 
