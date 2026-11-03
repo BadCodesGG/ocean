@@ -15,7 +15,7 @@
 import { spawn, spawnSync } from "node:child_process";
 import { existsSync } from "node:fs";
 import path from "node:path";
-import { chromium } from "playwright";
+import { launchChrome } from "./lib/chrome.mjs";
 
 const ROOT = path.resolve(import.meta.dirname, "..");
 const PORT = Number(process.argv.find((a) => a.startsWith("--port="))?.slice(7) ?? 3132);
@@ -61,9 +61,8 @@ async function waitForServer() {
 }
 
 // The installed Google Chrome, never Playwright's bundled Chromium (CVE-2026-118306 et al). A failed
-// launch (no Chrome here) stops the server it would otherwise leave holding the port.
-const browser = await chromium
-  .launch({ headless: true, channel: "chrome", args: ["--use-angle=d3d11", "--ignore-gpu-blocklist"] })
+// launch (no Chrome here, or one older than the patched build) stops the server it would otherwise leave holding the port.
+const browser = await launchChrome({ headless: true, args: ["--use-angle=d3d11", "--ignore-gpu-blocklist"] })
   .catch((error) => {
     stopServer();
     throw error;
