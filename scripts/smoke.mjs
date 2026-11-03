@@ -7,9 +7,9 @@
  * build), then checks the routes against the real CDIP and Open-Meteo services: the buoy data, the
  * station status, the named station pages and the old id addresses that redirect to them. Then it
  * drives the page in GPU Google Chrome (Playwright, channel "chrome"): the scene draws, the coast
- * loads, the console stays clean, the label is honest, the picker greys out the buoys that are down, the light, weather and picture
- * settings change the scene, survive a reload and reset to live, a boat launches and runs, and the
- * sound switches on. Prints a line per assertion and exits 1 if any failed.
+ * loads, the console stays clean, the label is honest, the picker greys out the buoys that are down,
+ * the light, weather and picture settings change the scene, survive a reload and reset to live, a
+ * boat launches and runs, and the sound switches on. Prints a line per assertion and exits 1 if any failed.
  */
 
 import { spawn, spawnSync } from "node:child_process";
