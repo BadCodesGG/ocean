@@ -1,5 +1,5 @@
 /**
- * Screenshot the running app in GPU Chromium, for judging the look.
+ * Screenshot the running app in GPU Google Chrome (Playwright, channel "chrome"), for judging the look.
  *
  *   node scripts/shoot.mjs [url] [out.png] [--wait=ms] [--eval=js] [--size=WxH]
  *
@@ -18,7 +18,7 @@ const wait = Number(flag("wait") ?? 3000);
 const script = flag("eval");
 const [w, h] = (flag("size") ?? "1600x900").split("x").map(Number);
 
-const browser = await chromium.launch({ headless: true, args: ["--use-angle=d3d11", "--ignore-gpu-blocklist", "--enable-gpu-rasterization"] });
+const browser = await chromium.launch({ headless: true, channel: "chrome", args: ["--use-angle=d3d11", "--ignore-gpu-blocklist", "--enable-gpu-rasterization"] });
 const page = await browser.newPage({ viewport: { width: w, height: h } });
 let failed = false;
 page.on("console", (m) => {

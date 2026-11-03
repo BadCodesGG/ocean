@@ -88,7 +88,7 @@ npm run build          # production build
 npm run test:smoke     # end-to-end on the production build
 ```
 
-`npm run test:smoke` needs a build first (`npm run build`), Playwright's Chromium (`npx playwright install chromium`) and network access, because it boots `next start` and calls the live CDIP and Open-Meteo services. It then drives the page in Chromium: the scene draws, the coast loads, the console stays clean, the picker, light, weather and quality settings work, a boat launches and the sound switches on. It uses a GPU-backed browser; pass `-- --port=3132` to change the port.
+`npm run test:smoke` needs a build first (`npm run build`), Google Chrome (`npx playwright install chrome`; the scripts launch the installed Chrome, not Playwright's bundled Chromium) and network access, because it boots `next start` and calls the live CDIP and Open-Meteo services. It then drives the page in Chrome: the scene draws, the coast loads, the console stays clean, the picker, light, weather and quality settings work, a boat launches and the sound switches on. It uses a GPU-backed browser; pass `-- --port=3132` to change the port.
 
 `node scripts/shoot.mjs [url] [out.png]` takes a GPU screenshot of a running instance and prints console warnings (see the script header for `--wait`, `--eval` and `--size`).
 
