@@ -12,6 +12,13 @@ const nextConfig: NextConfig = {
         source: "/:path*",
         headers: [{ key: "Content-Security-Policy", value: "frame-ancestors 'self' https://badcodes.dev https://www.badcodes.dev" }],
       },
+      {
+        // The same deployment also answers on its *.vercel.app aliases. Those copies stay out of
+        // search results, so the custom domain is the only one a crawler indexes.
+        source: "/:path*",
+        missing: [{ type: "host", value: "ocean.badcodes.dev" }],
+        headers: [{ key: "X-Robots-Tag", value: "noindex" }],
+      },
     ];
   },
   async redirects() {

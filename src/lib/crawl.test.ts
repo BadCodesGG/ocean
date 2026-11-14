@@ -40,3 +40,15 @@ describe("sitemap.xml", () => {
     expect(canonicalUrl("/mokapu-point")).toBe("https://ocean.badcodes.dev/mokapu-point");
   });
 });
+
+describe("duplicate hosts", () => {
+  it("send noindex on every host except the custom domain", async () => {
+    const { default: nextConfig } = await import("../../next.config");
+    const rules = (await nextConfig.headers?.()) ?? [];
+    const noindex = rules.filter((rule) => rule.headers.some((h) => h.key === "X-Robots-Tag" && h.value === "noindex"));
+    expect(noindex).toHaveLength(1);
+    expect(noindex[0].source).toBe("/:path*");
+    expect(noindex[0].has).toBeUndefined();
+    expect(noindex[0].missing).toEqual([{ type: "host", value: new URL(canonicalUrl("/")).host }]);
+  });
+});
