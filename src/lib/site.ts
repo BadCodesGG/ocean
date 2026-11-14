@@ -26,3 +26,11 @@ export function pageMetadata({ title, description, path }: { title: string; desc
     twitter: { card: "summary_large_image", title, description, images: [OG_IMAGE.url] },
   };
 }
+
+/**
+ * The absolute URL of a route as its rendered canonical link spells it: Next writes the home page as
+ * the bare origin, with no trailing slash, and every other route as origin plus path.
+ */
+export function canonicalUrl(path: string): string {
+  return path === "/" ? SITE_URL : new URL(path, SITE_URL).href;
+}
