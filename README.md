@@ -94,6 +94,10 @@ npm run test:smoke     # end-to-end on the production build
 
 The site URL is fixed in `src/lib/site.ts`. If you deploy your own copy, change it there, along with the `frame-ancestors` policy in `next.config.ts`, which only lets `badcodes.dev` embed the site.
 
+CI (`.github/workflows/ci.yml`) runs lint, typecheck, tests and the build on every push to `main`, not on pull requests; `test:smoke` needs a GPU browser and the live services, so it stays local.
+
+`package.json` `overrides` force `minimatch` ^11.0.8 under `@typescript-eslint/typescript-estree` (the lint parser) to clear GHSA-g3hv-75wg-m249 (minimatch >=7.0.0 <11.0.1). The parent declares an older major and only calls the named `minimatch()` export, which 11 keeps. Drop the override once it declares a fixed range (`npm view @typescript-eslint/typescript-estree dependencies`), then rerun `npm audit`.
+
 ## Data and licence
 
 The code is MIT, see [LICENSE](LICENSE). The buoy fixtures under `src/lib/__fixtures__/` are CDIP data and are not covered by it.
